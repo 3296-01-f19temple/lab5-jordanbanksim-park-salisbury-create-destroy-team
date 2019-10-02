@@ -1,15 +1,40 @@
-# BankSim
+# BankSim - Multithreading and Synchronization in Java
 
-The purpose of this lab assignment is to observe and resolve the race condition in a multi-thread program. You are given the initial source code of a bank fund transferring simulation program as described in the class. The initial program does not have any means to protect the critical part of the code to prevent race condition. So race condition always happens when it runs. Here are the tasks you have to do (in that order) and their requirements.
 
-Task 1. Run the initial program as is to observe race condition and explain how a race condition may occur. Draw a simple  UML sequence diagram to support your explanation. Add your explanation and the sequence diagram to [README.md](README.md)
 
-Task 2. Implement protection code to resolve the race condition issue. We may use either synchronized object locks or ReentrantLock class to prevent two treads from having access the same global variables simultaneously. You solution must allow the bank to transfer multiple fund between unrelated accounts, e.g. from account [2] to account [5] and from account [3] to account [7] at the same time.
+***NOTE:** Any UML diagrams, written responses to questions, and notes on teamwork and testing should be uploaded to the repository’s README.md.*
 
-Task 3. The test method in the bank simulation program implemented Task 2 may still reports an error. This is because while the test method is summing the amounts in each account in one thread, transfers are still taking place in other threads. This is another source to a race condition. Refactoring the method of testing summing the accounts in each account in a new and separate thread. Provide code protection so that the newly-created testing thread and any other amount transferring threads are running exclusively, i.e. the testing thread starts with a signal to all transferring threads, waits for all the transferring threads finishing the current transferring, and then takes over the testing task while all the transferring threads are waiting until the test is done.
+### Task 1:
 
-Task 4. The initial code does not allow an account to transfer out fund if the transferring amount is greater than the account balance. Implement a wait/notify solution to defer the transfer until the account balance becomes greater than the transferring amount (assume some the account will receive the fund later).
+- **1a.** Before running the given source code, spend some time inspecting each of the classes in the project. Provide a high-level description of the requirements of the BankSim project. Keep the description non-technical, explain the semantics/significance behind what is actually happening when you run the project.
+- **1b.** Now provide a brief technical overview of the project, paying particular attention to how multithreading is currently supported. Under the current implementation, there is a major race condition that inhibits the successful execution of the Bank; what is it?
+- **1c.** Draw a UML sequence diagram to support your technical comprehension (the race condition should be apparent in the diagram)
+- **1d.** Upload these written tasks and your sequence diagram to the repository’s README.md
 
-Task 5. Deadlock condition may occur (very rare) if one thread finishes all the fund transfers and exit. Implement a solution in which all thread stop fund transferring (bank is close) whenever one tread completes its fund transfers. This will solve the deadlock condition issue.
+### Task 2:
 
-Note that a solution that does not permit un-related transfers to take place simultaneously is not acceptable.
+- **2a.** Research these three common thread synchronization techniques in Java. Describe some similarities and differences between the three. Provide an argument for which technique seems most applicable to the current race condition problem:
+
+  - Synchronized Methods
+  - Synchronized Code Blocks
+  - ReentrantLock
+ - **2b.** Implement one of these synchronization solutions to resolve the race condition discovered in Task 1. **IMPORTANT:** The solution *must* allow the bank to transfer multiple funds between two unrelated accounts:
+*(i.e.)* A transfer from Account [2] to Account [3] *AND* a transfer from Account [6] to Account [7] can occur at the same time.
+
+### Task 3:
+
+- **3a.** The race condition discovered in Task 1 should be resolved, but your BankSim will still more than likely hold another race condition. Using the later steps of this task as a hint, provide an explanation for this second race condition.
+- **3b.** Refactor the Bank class such that the testing method occurs on a separate thread from the transfer thread.
+- **3c.** Implement mutual exclusion between the testing thread and the transferring thread.
+  - *(Hint):* When the testing thread is called it must send a signal to each transferring thread.
+
+### Task 4:
+
+- **4a.** A transfer cannot occur between two Accounts if the requested withdrawal by the *‘to’* Account exceeds the balance within the *‘from’* Account. Explain why the default implementation--while functional--is a poor solution in a multithreading environment.
+- **4b.** Design and implement a wait/notify solution to defer any invalid transfers until the *‘from’* Account’s balance exceeds the requested amount. Be sure to document your solution.
+
+### Task 5:
+
+- **5a.** A deadlock condition may occur that blocks the successful termination of the BankSim after the simulation has reached the predefined number of transfers. What is causing this deadlock?
+- **5b.** Implement a solution to this deadlock condition.
+  - *(Hint):* Which thread ‘knows’ exactly when the simulation has completed?
