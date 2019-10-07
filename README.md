@@ -29,7 +29,7 @@ run simultaneously.
 
 
 
-### Race Condition Soltions For Base Version
+### Race Condition Solutions For Base Version (2a)
 - Synchronized Methods
 
 Synchronized Methods are one tool used for race condition issues. If an object is visible
