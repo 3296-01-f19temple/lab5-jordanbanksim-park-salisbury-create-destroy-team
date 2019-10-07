@@ -25,4 +25,4 @@ first thread to finish for accountA; in fact the result of the first thread to f
 Of course, this example only details issues with two threads that collide. This problem will compound as more threads
 run simultaneously. 
 
-### UML
+### Sequence Diagram Of Base Version
