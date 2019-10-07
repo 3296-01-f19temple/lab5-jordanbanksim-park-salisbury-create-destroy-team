@@ -25,9 +25,9 @@ first thread to finish for accountA; in fact the result of the first thread to f
 Of course, this example only details issues with two threads that collide. This problem will compound as more threads
 run simultaneously. 
 
-### Sequence Diagram Of Base Version
+### Sequence Diagram Of Base Version Race Condition
 
-
+![Base Version race condition diagram](lab_5_task_1c_sequence_diagram_image.png)
 
 ### Race Condition Solutions For Base Version (2a)
 - Synchronized Methods
