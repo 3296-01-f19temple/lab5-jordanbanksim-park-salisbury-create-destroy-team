@@ -10,4 +10,8 @@ is to allow for transfering of funds between accounts by first withdrawing a sum
 it has the required amount, then depositing that amount into another account.
 
 ### Existing Issues In Base Version
-Within the TransferThread file, 
+In this version of the BankSim, there will be 10 threads, each actively transfering money to and from each other.
+Since there is no scheduling mechanism currently implemented, each of these equal-priority threads will
+operate in a round-robin schedule. As a result, in certain situations, we will run into a race condition.
+
+The most likely case that a race condition will occur is if two threads interact with the same "account". 
