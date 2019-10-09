@@ -64,3 +64,5 @@ method. That said, with an initially defined thread count of 10, starvation can 
 become an issue, a notable downfall of synchronized methods. As a result, I believe that 
 reentrant locks will be the best means of solving the race condition in the initial
 BankSim build. 
+
+### The Second Race Condition (3a)
