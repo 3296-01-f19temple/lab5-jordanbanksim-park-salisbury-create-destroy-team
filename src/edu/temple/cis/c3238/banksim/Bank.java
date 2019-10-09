@@ -14,6 +14,8 @@ public class Bank {
     private final int initialBalance;
     private final int numAccounts;
 
+    public final ReentrantLock ntransactsLock;
+
     public Bank(int numAccounts, int initialBalance) {
         this.initialBalance = initialBalance;
         this.numAccounts = numAccounts;
@@ -22,6 +24,7 @@ public class Bank {
             accounts[i] = new Account(this, i, initialBalance);
         }
         ntransacts = 0;
+        ntransactsLock = new ReentrantLock(true);
     }
 
     public void transfer(int from, int to, int amount) {
