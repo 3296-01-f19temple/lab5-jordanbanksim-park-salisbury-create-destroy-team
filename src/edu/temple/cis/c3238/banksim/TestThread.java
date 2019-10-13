@@ -1,6 +1,7 @@
 package edu.temple.cis.c3238.banksim;
 /**
  * @author Christopher Park
+ * @author Scott Salisbury
  */
 class TestThread extends Thread {
 
@@ -12,8 +13,10 @@ class TestThread extends Thread {
 
     @Override
     public void run() {
-        if(bank.shouldTest()){
-            bank.test();
-        }
+        ntransacts.Lock();
+        bank.test();
+        ntransact.Unlock();
+        timeToTest.await();
+
     }
 }
