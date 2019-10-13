@@ -15,6 +15,8 @@ public class Bank {
     private final int numAccounts;
 
     public final ReentrantLock ntransactsLock;
+    public final Condition fundsTransferred = lock.newCondition();
+    //public final Condition timeToTest = lock.newCondition();
 
     public Bank(int numAccounts, int initialBalance) {
         this.initialBalance = initialBalance;
