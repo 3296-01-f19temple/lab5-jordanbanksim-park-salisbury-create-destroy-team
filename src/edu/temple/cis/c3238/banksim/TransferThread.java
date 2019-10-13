@@ -19,9 +19,16 @@ class TransferThread extends Thread {
     @Override
     public void run() {
         for (int i = 0; i < 10000; i++) {
+            ntransactsLock.lock();
+            if(Bank.shouldTest()){
+                timeToTest.signal();
+                ntransactLock.unlock();
+            }
             int toAccount = (int) (bank.size() * Math.random());
             int amount = (int) (maxAmount * Math.random());
             bank.transfer(fromAccount, toAccount, amount);
+            ntransactLock.unlock();
+            
         }
     }
 }
