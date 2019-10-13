@@ -13,10 +13,11 @@ class TestThread extends Thread {
 
     @Override
     public void run() {
-        ntransacts.Lock();
-        bank.test();
-        ntransact.Unlock();
-        timeToTest.await();
-
+        while(true){
+            ntransacts.Lock();
+            bank.test();
+            ntransact.Unlock();
+            fundsTransferred.await();
+        }
     }
 }

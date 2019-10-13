@@ -14,8 +14,8 @@ public class BankSimMain {
         Bank b = new Bank(NACCOUNTS, INITIAL_BALANCE);
         Thread[] threads = new Thread[NACCOUNTS + 1]; //+1 for test thread 
         // Start a thread for each account
-        threads[NACCOUNTS] = new testThread();
-        threads[NACCOUTNS].start();
+        threads[NACCOUNTS] = new TestThread();
+        threads[NACCOUNTS].start();
         for (int i = 0; i < NACCOUNTS; i++) {
             threads[i] = new TransferThread(b, i, INITIAL_BALANCE);
             threads[i].start();
