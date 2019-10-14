@@ -64,3 +64,17 @@ method. That said, with an initially defined thread count of 10, starvation can 
 become an issue, a notable downfall of synchronized methods. As a result, I believe that 
 reentrant locks will be the best means of solving the race condition in the initial
 BankSim build. 
+
+### The Second Race Condition (3a)
+The second race condition involves some of the transfer threads acting while another transfer thread is 
+running the test() function. The test() function iterates over the array of accounts, fetching their balances
+and adding them up. However, after it has fetched and summed the first several accounts' balances, one of the other 
+threads might withdraw money from a later account (not yet accessed by the tester) and deposit that money into 
+one of the earlier accounts (whose now-obsolete balance value had previously been read by the tester). 
+Likewise, another thread might withdraw money from an earlier account (whose now-obsolete balance value had 
+previously been read by the tester) and then deposit that money in a later account (whose balance hadn't yet been 
+read by the tester). 
+Basically, because the test function only checks an account's balance once, it's blind to changes
+in the earlier accounts' balances after it had accessed them. As a result, it will sometimes incorrectly think
+that money has either spontaneously disappeared from or been added to the bank.
+ 
