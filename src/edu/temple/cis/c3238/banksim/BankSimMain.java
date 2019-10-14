@@ -1,9 +1,5 @@
 package edu.temple.cis.c3238.banksim;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.Condition;
-
 /**
  * @author Cay Horstmann
  * @author Modified by Paul Wolfgang
@@ -17,19 +13,18 @@ public class BankSimMain {
 
     public static void main(String[] args) {
         Bank b = new Bank(NACCOUNTS, INITIAL_BALANCE);
-        Thread[] threads = new Thread[NACCOUNTS]; 
+        Thread[] threads = new Thread[NACCOUNTS];
         // Start a thread for each account
-        Lock ntransactsLock = new ReentrantLock(true);
-        Condition fundsTransferred = ntransactsLock.newCondition();
 
-        Thread testerThread = new TestThread(b, ntransactsLock, fundsTransferred);
+        Thread testerThread = new TestThread(b);
         testerThread.start();
+
         for (int i = 0; i < NACCOUNTS; i++) {
-            threads[i] = new TransferThread(b, i, INITIAL_BALANCE, ntransactsLock, fundsTransferred);
+            threads[i] = new TransferThread(b, i, INITIAL_BALANCE);
             threads[i].start();
         }
 
-          System.out.println("Bank transfer is in the process.");
+         System.out.println("Bank transfers are in progress.");
     }
 }
 
