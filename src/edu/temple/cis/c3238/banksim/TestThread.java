@@ -22,11 +22,16 @@ class TestThread extends Thread {
 
     @Override
     public void run() {
-        while(true){
-            //fundsTransferred.await();
-            //ntransactsLock.Lock();
-            bank.test();
-            //ntransactsLock.Unlock();
+        while(true){            
+            ntransactsLock.lock();
+            try{
+                fundsTransferred.await();
+                bank.test();
+            } catch(InterruptedException e) {
+                System.err.println("tester thread interrupted while waiting to run test");
+            } finally{
+                ntransactsLock.unlock();
+            }
         }
     }
 }
