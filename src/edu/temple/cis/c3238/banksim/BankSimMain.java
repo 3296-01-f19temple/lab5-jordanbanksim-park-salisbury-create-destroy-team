@@ -14,15 +14,13 @@ public class BankSimMain {
     public static final int NACCOUNTS = 10;
     public static final int INITIAL_BALANCE = 10000;
 
-    public static Lock ntransactsLock;
-    public static Condition fundsTransferred;
 
     public static void main(String[] args) {
         Bank b = new Bank(NACCOUNTS, INITIAL_BALANCE);
         Thread[] threads = new Thread[NACCOUNTS]; 
         // Start a thread for each account
-        ntransactsLock = new ReentrantLock(true);
-        fundsTransferred = ntransactsLock.newCondition();
+        Lock ntransactsLock = new ReentrantLock(true);
+        Condition fundsTransferred = ntransactsLock.newCondition();
 
         Thread testerThread = new TestThread(b, ntransactsLock, fundsTransferred);
         testerThread.start();
@@ -31,8 +29,7 @@ public class BankSimMain {
             threads[i].start();
         }
 
-//        b.test();
-          System.out.printf("Bank transfer is in the process.\n");
+          System.out.println("Bank transfer is in the process.");
     }
 }
 

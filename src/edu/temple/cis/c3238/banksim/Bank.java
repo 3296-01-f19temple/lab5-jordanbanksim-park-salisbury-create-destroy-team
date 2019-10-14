@@ -1,9 +1,5 @@
 package edu.temple.cis.c3238.banksim;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.Condition;
-
 /**
  * @author Cay Horstmann
  * @author Modified by Paul Wolfgang

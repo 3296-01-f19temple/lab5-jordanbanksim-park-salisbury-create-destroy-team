@@ -1,7 +1,6 @@
 package edu.temple.cis.c3238.banksim;
 
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.Condition;
 
 /**
@@ -22,9 +21,9 @@ class TestThread extends Thread {
 
     @Override
     public void run() {
-        while(true){            
-            ntransactsLock.lock();
+        while(true) {
             try{
+                ntransactsLock.lock();
                 fundsTransferred.await();
                 bank.test();
             } catch(InterruptedException e) {
