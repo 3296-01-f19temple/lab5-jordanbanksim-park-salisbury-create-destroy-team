@@ -77,4 +77,21 @@ read by the tester).
 Basically, because the test function only checks an account's balance once, it's blind to changes
 in the earlier accounts' balances after it had accessed them. As a result, it will sometimes incorrectly think
 that money has either spontaneously disappeared from or been added to the bank.
- 
+
+### Defaulting On Payments (4a)
+There is another issue that is not handled well in the initial implementation of the bank simulation. 
+Currently whenever a transfer is started, an if check is done to see if the account being withdrawn from
+has enough available funds to make the payment. If it does, the check returns true and the entire 
+transaction continues as intended. However if the account does not have a sufficient balance to pay off
+the transaction amount, the entire transaction is cancelled. While this does not create issues in the 
+multithreading environment itself, it does a poor job of simulating bank operations. In order to better
+simulate a bank setting, withdraws on accounts with insufficient balances will wait until the particular
+account acquires the necessary funds to complete the transaction. This can be accomplished using 
+wait() and notifyAll() methods.
+
+-potential problems 
+In an open system where funds could transfer outside the bank accounts into third party groups, 
+there could potentially be a deadlock situation. This would occur when every thread attempts 
+transfers from accounts with insufficient funds for the transfers. However since this is a closed
+system and the max transfer cannot exceed the initial amount every account starts with, there will
+always be at least one account with the requisite funds to complete a transfer. 
