@@ -11,8 +11,8 @@ import java.util.concurrent.locks.Condition;
 class TestThread extends Thread {
 
     private final Bank bank;
-    public static Lock ntransactsLock;
-    public static Condition fundsTransferred;
+    public Lock ntransactsLock;
+    public Condition fundsTransferred;
 
     public TestThread(Bank b, Lock ntransactsLock, Condition fundsTransferred) {
         this.bank = b;
@@ -25,12 +25,8 @@ class TestThread extends Thread {
         while(true){
             //fundsTransferred.await();
             //ntransactsLock.Lock();
-            try{
-                bank.test();
-            } 
-            finally{
-                //ntransactsLock.Unlock();
-            }
+            bank.test();
+            //ntransactsLock.Unlock();
         }
     }
 }
