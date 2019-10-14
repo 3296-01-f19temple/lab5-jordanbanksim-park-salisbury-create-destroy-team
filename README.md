@@ -89,7 +89,8 @@ simulate a bank setting, withdraws on accounts with insufficient balances will w
 account acquires the necessary funds to complete the transaction. This can be accomplished using 
 wait() and notifyAll() methods.
 
--potential problems 
+- Potential Problems 
+
 In an open system where funds could transfer outside the bank accounts into third party groups, 
 there could potentially be a deadlock situation. This would occur when every thread attempts 
 transfers from accounts with insufficient funds for the transfers. However since this is a closed
