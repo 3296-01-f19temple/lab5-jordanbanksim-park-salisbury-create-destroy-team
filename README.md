@@ -99,6 +99,8 @@ always be at least one account with the requisite funds to complete a transfer.
 
 ### A New Deadlock (5a)
 
+***
+
 ## Requirements
 
 The purpose of this lab was to fix the existing multi-threading problems and design
@@ -145,3 +147,27 @@ started by discussing the above problem in greater detail before implementing a 
  and potential solution above in the README before starting on the actual implementation.
   - Finish this section
 
+## Team work
+
+ The collaboration for this project was good. By using a mixture of texting, notes on the Trello board, and
+ review notes on any github pull requests, information was clearly conveyed in an environment relevant to
+ what needed to be addressed. After each task was completed, the Trello board would be updated to convey the
+ information that a card has be done, and requires review. From here each task is reviewed by the other team
+ member before the task is finally deemed "Done" on the Trello board.
+ 
+ ### contributions
+ The Trello board also includes some information on this.
+ #### Christopher Park
+ * Created and populated Trello board
+ * Wrote overview of initial implementation of project
+ * Discussed issues existing in initial implementation of project
+ * Detailed potential solutions for first race condition
+ * Seperated the testing method into its own seperate thread
+ * Explained design issues existing in current implementation of Accounts class
+ * Implemented solution to design problem in Accounts class
+ * Populated readme for writing requirement
+ 
+ #### Scott Salisbury
+ * Fill in here
+ 
+ ## Testing
