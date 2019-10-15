@@ -157,7 +157,7 @@ started by discussing the above problem in greater detail before implementing a 
  information that a card has be done, and requires review. From here each task is reviewed by the other team
  member before the task is finally deemed "Done" on the Trello board.
  
- ### contributions
+ ### Contributions
  The Trello board also includes some information on this.
  #### Christopher Park
  * Created and populated Trello board
@@ -178,4 +178,5 @@ started by discussing the above problem in greater detail before implementing a 
 
 ![Base Version race condition diagram](lab_5_task_1c_sequence_diagram_image.png)
 ![Simple call to test() after part3](SimpleSeqPart3.png)
+
 [Link to above UML diagram for editing](https://sequencediagram.org/index.html#initialData=C4S2BsFMAIGEENzhAOwObWJAzsAFAJTTwBmWATtACrzYDWAzNHgEaQkD25MN9ALAQBQggA7xyoAMYgxKYNBbwUdANwAhJXVHipMpfPiTJHAK5yAgiujmjpudokhpsg7bPA1Vm8fcPdLzHIlbBJIcioAC254ABNzPyc9OUwcCkjomOFhQ1AAN3gsQODQ8KjIWPjgIJQQsPTyuIBaAD5FZXVNAC4q4rC8EDiAGmgBtWH4AFtgAEYhGPLJPIKYHpqS+orBHJB8wrbVDWVBfY7lFsMfCy83OU6AdzAImKC7vEmZoW3dmAu7YEtrDdgFsgQDvH9Gi0Toc6J1BPMvstiKDrpdgcdNKc6OcgZ5AWjOvMRBxsGA3lNZiCloVfu48eDfLS5PSgZDWpiYXCEYsdkimR5UX8Me0YWzVrVShlzFyFtSYNDNFTeYVxesyptBKq6uqms0sLhtRlOqS0ChEIR4bLlStqhKNnEld8UgbJQ1NalDQ0oRyuvr8HMrU6-Z7Yo6kQqjhHsS1g67YjLEXsfUdEysPXHMrH7THbWqpcaQKbzQHU860jqwyrcyGHVk63WgA)
