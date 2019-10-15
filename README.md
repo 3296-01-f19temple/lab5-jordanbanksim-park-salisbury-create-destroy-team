@@ -77,4 +77,97 @@ read by the tester).
 Basically, because the test function only checks an account's balance once, it's blind to changes
 in the earlier accounts' balances after it had accessed them. As a result, it will sometimes incorrectly think
 that money has either spontaneously disappeared from or been added to the bank.
+
+### Defaulting On Payments (4a)
+There is another issue that is not handled well in the initial implementation of the bank simulation. 
+Currently whenever a transfer is started, an if check is done to see if the account being withdrawn from
+has enough available funds to make the payment. If it does, the check returns true and the entire 
+transaction continues as intended. However if the account does not have a sufficient balance to pay off
+the transaction amount, the entire transaction is cancelled. While this does not create issues in the 
+multithreading environment itself, it does a poor job of simulating bank operations. In order to better
+simulate a bank setting, withdraws on accounts with insufficient balances will wait until the particular
+account acquires the necessary funds to complete the transaction. This can be accomplished using 
+wait() and notifyAll() methods.
+
+- Potential Problems 
+
+In an open system where funds could transfer outside the bank accounts into third party groups, 
+there could potentially be a deadlock situation. This would occur when every thread attempts 
+transfers from accounts with insufficient funds for the transfers. However since this is a closed
+system and the max transfer cannot exceed the initial amount every account starts with, there will
+always be at least one account with the requisite funds to complete a transfer. 
+
+### A New Deadlock (5a)
+
+***
+
+## Requirements
+
+The purpose of this lab was to fix the existing multi-threading problems and design
+problems in a given bank simulation program. While there were four major problems that were 
+addressed in this project, the assignment itself was broken down into five parts for
+us to complete. The reason for this is to have students practice both documenting the
+initial problems within the program that they were provided as well as using management tools
+like Trello to document/display progress. 
+
+For the first task, we were asked to populate this README.md file with high-level information
+regarding the initial implementation of the bank simulation program. An outline of the existing
+problems in this initial version were discussed and a sequence diagram demonstrating the first race
+condition is also provided.
+
+For the second task, we are asked to resolve the first race condition that occurs when two threads
+would call transfers that interact with the same particular account. Since we were provided with
+three different potential solutions, this task begins with research into the uses of each of these
+potential solutions. After deciding on Reentrant Locks as the best options as it avoids the starvation
+problem the other two solutions cause, we implement the lock around the withdraw() and deposit() 
+threads. 
+
+For the third task, we are asked to resolve a second race condition that occurs with the test function
+in each of the transfer threads conflicting with one another. After detailing the issue in the above section
+of this README file, we start by seperating the use of the test() method into its own thread. Within this new
+testing thread, we implement Condition Variables as a means of both giving the testing thread the resources to
+run and the ability to await() until when testing should be done. When it is determined to be time to test, 
+a transfer thread will signal() the testing thread to run the test, which at the same time temporarily halts
+all transfer threads. 
+
+For the fourth task, we are asked to resolve a design issue in the Accounts class. With the current
+implementation, any withdraw() requests to an account with insufficient funds is simply dropped. 
+While this allows the program to avoid problematic instances where accounts dip into negative balances,
+given that this is a simulation, it is a poor representation of how a bank should work. This task was 
+started by discussing the above problem in greater detail before implementing a solution. 
+ - Finish this section
  
+ For the fifth task, we are asked to solve the final issue with the program, a deadlock issue that
+ occurs at the end of the program runtime as a result of implementing task four. In the previous task
+ we set transfers requesting an amount more than the existing balance of an account to wait until
+ another transfer deposits at least the difference of the required amount into that account to continue.
+ While this works fine during the runtime, when the transfer threads run near the end of their set runtime,
+ a deadlock can occur if there are threads waiting for funds to continue a transfer, but all other 
+ non-waiting threads have completed their run. Like the other tasks, we begin this by detailing the problem
+ and potential solution above in the README before starting on the actual implementation.
+  - Finish this section
+
+## Team work
+
+ The collaboration for this project was good. By using a mixture of texting, notes on the Trello board, and
+ review notes on any github pull requests, information was clearly conveyed in an environment relevant to
+ what needed to be addressed. After each task was completed, the Trello board would be updated to convey the
+ information that a card has be done, and requires review. From here each task is reviewed by the other team
+ member before the task is finally deemed "Done" on the Trello board.
+ 
+ ### contributions
+ The Trello board also includes some information on this.
+ #### Christopher Park
+ * Created and populated Trello board
+ * Wrote overview of initial implementation of project
+ * Discussed issues existing in initial implementation of project
+ * Detailed potential solutions for first race condition
+ * Seperated the testing method into its own seperate thread
+ * Explained design issues existing in current implementation of Accounts class
+ * Implemented solution to design problem in Accounts class
+ * Populated readme for writing requirement
+ 
+ #### Scott Salisbury
+ * Fill in here
+ 
+ ## Testing

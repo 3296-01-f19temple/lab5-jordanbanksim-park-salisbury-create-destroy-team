@@ -29,6 +29,7 @@ class TestThread extends Thread {
             try{
                 numActiveTransactsLock.lock();
                 while( !bank.canTest() ) {
+//                    System.out.println("can't test yet");
                     readyToTest.await();
                 }
                 bank.test();
