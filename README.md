@@ -78,6 +78,8 @@ Basically, because the test function only checks an account's balance once, it's
 in the earlier accounts' balances after it had accessed them. As a result, it will sometimes incorrectly think
 that money has either spontaneously disappeared from or been added to the bank.
 
+![Simple call to test() after part3](SimpleSeqPart3.png)
+
 ### Defaulting On Payments (4a)
 There is another issue that is not handled well in the initial implementation of the bank simulation. 
 Currently whenever a transfer is started, an if check is done to see if the account being withdrawn from
@@ -171,3 +173,9 @@ started by discussing the above problem in greater detail before implementing a 
  * Fill in here
  
  ## Testing
+ 
+ ## UML diagrams
+
+![Base Version race condition diagram](lab_5_task_1c_sequence_diagram_image.png)
+![Simple call to test() after part3](SimpleSeqPart3.png)
+[Link to above UML diagram for editing](https://sequencediagram.org/index.html#initialData=C4S2BsFMAIGEENzhAOwObWJAzsAFAJTTwBmWATtACrzYDWAzNHgEaQkD25MN9ALAQBQggA7xyoAMYgxKYNBbwUdANwAhJXVHipMpfPiTJHAK5yAgiujmjpudokhpsg7bPA1Vm8fcPdLzHIlbBJIcioAC254ABNzPyc9OUwcCkjomOFhQ1AAN3gsQODQ8KjIWPjgIJQQsPTyuIBaAD5FZXVNAC4q4rC8EDiAGmgBtWH4AFtgAEYhGPLJPIKYHpqS+orBHJB8wrbVDWVBfY7lFsMfCy83OU6AdzAImKC7vEmZoW3dmAu7YEtrDdgFsgQDvH9Gi0Toc6J1BPMvstiKDrpdgcdNKc6OcgZ5AWjOvMRBxsGA3lNZiCloVfu48eDfLS5PSgZDWpiYXCEYsdkimR5UX8Me0YWzVrVShlzFyFtSYNDNFTeYVxesyptBKq6uqms0sLhtRlOqS0ChEIR4bLlStqhKNnEld8UgbJQ1NalDQ0oRyuvr8HMrU6-Z7Yo6kQqjhHsS1g67YjLEXsfUdEysPXHMrH7THbWqpcaQKbzQHU860jqwyrcyGHVk63WgA)
