@@ -48,12 +48,15 @@ public class Bank {
         readyToTest = numActiveTransactsLock.newCondition();
     }
 
+    public void waitForFundsAvailable(int accountId, int amount) {
+        accounts[accountId].waitForAvailableFunds(amount);
+    }
+
     public void transfer(int from, int to, int amount) {
-        accounts[from].waitForAvailableFunds(amount);
         if (accounts[from].withdraw(amount)) {
             accounts[to].deposit(amount);
         }
-        //System.out.println("another transaction: ntransacts= " + ntransacts);
+//        System.out.println("another transaction: ntransacts= " + ntransacts);
     }
 
     public void test() {
@@ -85,6 +88,7 @@ public class Bank {
     }
 
     public boolean canTest() {
+//        System.out.println("should test: " + shouldTest + " and numActiveTransacts: " + numActiveTransacts);
         return shouldTest && numActiveTransacts == 0;
     }
 
