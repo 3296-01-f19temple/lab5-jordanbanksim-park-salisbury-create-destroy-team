@@ -100,7 +100,13 @@ system and the max transfer cannot exceed the initial amount every account start
 always be at least one account with the requisite funds to complete a transfer. 
 
 ### A New Deadlock (5a)
-
+When the transfer thread for one account finishes all of the transfers which it's been programmed to make, it exits, 
+and nothing in the simulation can access the funds in that account anymore. That could lock up so much money
+that there wouldn't be enough money left amongst all of the other accounts for them to initiate the transfers that they 
+randomly elect to make, and each one would lock on waiting for some other thread to transfer money into it 
+from another account, but no thread would be able to perform such a transfer. This is essentially the deadlock 
+described in the 'Potential Problems' section of 4a, where money leaves the otherwise-closed system by being
+in an account when that account's thread exits.
 ***
 
 ## Requirements
