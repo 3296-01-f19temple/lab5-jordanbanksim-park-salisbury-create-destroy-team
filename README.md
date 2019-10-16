@@ -178,7 +178,8 @@ for an updated balance that may now satisfy the pending funds transfer.
  * Outlined cause of second race condition
  * Heavily assisted in bug-fixing of Task 3b
  * Implemented mutual exclusion for newly made test thread
- * ADD TASK 5 WHEN DONE
+ * Identified cause of deadlock near end of program execution
+ * Implemented solution for deadlock that prevents successful termination
  
  ## Testing
  
