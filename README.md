@@ -78,6 +78,8 @@ Basically, because the test function only checks an account's balance once, it's
 in the earlier accounts' balances after it had accessed them. As a result, it will sometimes incorrectly think
 that money has either spontaneously disappeared from or been added to the bank.
 
+![Simple call to test() after part3](SimpleSeqPart3.png)
+
 ### Defaulting On Payments (4a)
 There is another issue that is not handled well in the initial implementation of the bank simulation. 
 Currently whenever a transfer is started, an if check is done to see if the account being withdrawn from
@@ -98,7 +100,13 @@ system and the max transfer cannot exceed the initial amount every account start
 always be at least one account with the requisite funds to complete a transfer. 
 
 ### A New Deadlock (5a)
-
+When the transfer thread for one account finishes all of the transfers which it's been programmed to make, it exits, 
+and nothing in the simulation can access the funds in that account anymore. That could lock up so much money
+that there wouldn't be enough money left amongst all of the other accounts for them to initiate the transfers that they 
+randomly elect to make, and each one would lock on waiting for some other thread to transfer money into it 
+from another account, but no thread would be able to perform such a transfer. This is essentially the deadlock 
+described in the 'Potential Problems' section of 4a, where money leaves the otherwise-closed system by being
+in an account when that account's thread exits.
 ***
 
 ## Requirements
@@ -134,8 +142,11 @@ For the fourth task, we are asked to resolve a design issue in the Accounts clas
 implementation, any withdraw() requests to an account with insufficient funds is simply dropped. 
 While this allows the program to avoid problematic instances where accounts dip into negative balances,
 given that this is a simulation, it is a poor representation of how a bank should work. This task was 
-started by discussing the above problem in greater detail before implementing a solution. 
- - Finish this section
+started by discussing the above problem in greater detail before implementing a solution. To actually fix
+the design issue, we first create a new method waitForAvailableFunds(int). After creating a new sufficientBalance
+condition on the existing balanceLock, I have the method await() a thread if the account has insufficient funds.
+Every time a deposit is made, is use a signalAll() on the sufficientBalance condition to check all waiting threads
+for an updated balance that may now satisfy the pending funds transfer. 
  
  For the fifth task, we are asked to solve the final issue with the program, a deadlock issue that
  occurs at the end of the program runtime as a result of implementing task four. In the previous task
@@ -143,9 +154,9 @@ started by discussing the above problem in greater detail before implementing a 
  another transfer deposits at least the difference of the required amount into that account to continue.
  While this works fine during the runtime, when the transfer threads run near the end of their set runtime,
  a deadlock can occur if there are threads waiting for funds to continue a transfer, but all other 
- non-waiting threads have completed their run. Like the other tasks, we begin this by detailing the problem
- and potential solution above in the README before starting on the actual implementation.
-  - Finish this section
+ non-waiting threads have completed their run. This issue was avoided by having the bank store a flag
+ which indicated whether it was open and having the first transfer thread which finished all of its transfers
+ 'close' the bank by setting that flag and waking up all sleeping transfer threads.
 
 ## Team work
 
@@ -155,7 +166,7 @@ started by discussing the above problem in greater detail before implementing a 
  information that a card has be done, and requires review. From here each task is reviewed by the other team
  member before the task is finally deemed "Done" on the Trello board.
  
- ### contributions
+ ### Contributions
  The Trello board also includes some information on this.
  #### Christopher Park
  * Created and populated Trello board
@@ -168,6 +179,30 @@ started by discussing the above problem in greater detail before implementing a 
  * Populated readme for writing requirement
  
  #### Scott Salisbury
- * Fill in here
+ * Created sequence diagram for initial implementation
+ * Implemented solution to first race condition
+ * Outlined cause of second race condition
+ * Heavily assisted in bug-fixing of Task 3b
+ * Implemented mutual exclusion for newly made test thread
+ * Identified cause of deadlock near end of program execution
+ * Implemented solution for the deadlock that prevented successful termination
  
  ## Testing
+ 
+ Since there were no requirements for testing on this project, we did not follow any of the previous test
+ driven designs. When testing was done to verify the project was working, we would do system tests, simply
+ running the Main file to verify everything runs and operates as intended. Of course, these tests would be 
+ done manually. We would add logging statements to the code to assist debugging, especially when we were 
+ trying to infer how several threads were interacting behind the scenes.
+ 
+ The biggest bug that this testing allowed us to identify was during the implementation of 
+ task 4. After the design change was implemented, there was an issue during a run where the program would
+ always lock up before the second test() would be called. We identified this to be an odd deadlock situation
+ caused by the interaction between our task 3 and 4 implementations.
+ 
+ ## UML diagrams
+
+![Base Version race condition diagram](lab_5_task_1c_sequence_diagram_image.png)
+![Simple call to test() after part3](SimpleSeqPart3.png)
+
+[Link to above UML diagram for editing](https://sequencediagram.org/index.html#initialData=C4S2BsFMAIGEENzhAOwObWJAzsAFAJTTwBmWATtACrzYDWAzNHgEaQkD25MN9ALAQBQggA7xyoAMYgxKYNBbwUdANwAhJXVHipMpfPiTJHAK5yAgiujmjpudokhpsg7bPA1Vm8fcPdLzHIlbBJIcioAC254ABNLaiCUELDI6Ji-Jz05TBwKVMhYqypc-NjhYUNQADd4LEDg0PCogriixOSmtMFgdsbS1oSGlObYgFoAPkVldU0ALh6h8jwQOIAaaBW1dfgAW2AARiEYgslq2pgFpL6Rgape4a7KkBq6qdUNZUE3meUJwx8LF43HJZgB3MARGJBUF4XYHIRPF4wf52YDxbyowQo9zo4HAUYTb4fOizQTHRHnYh43EA4DCImaP54zzWPGzY4iDjYMCwvaHLGnZ6U7FyFkY3wijxA2kEyaaH4ksknM51SVivFfeXE2WXDr9eJ3Rb9UnkwVIhRazQClUXe6dFoGu39YS665pR1Gm4TLC4B4tIolG6zbloFCIQhKil1V1+2Ieq6x9JRi65RMB3DOn15G7p4D9QmW5TzXIR002nK++2FaiBx5mykMz6Nug61NVmK542R+uvQtaZMV7NpTs3bpt-ojtLep03eN6oMhsPgUvKoXR8c5msZ0cDmPtudulrlY8noA)

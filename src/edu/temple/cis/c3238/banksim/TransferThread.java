@@ -33,17 +33,27 @@ class TransferThread extends Thread {
 
     @Override
     public void run() {
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; bank.getIsOpen() && i < 10000; i++) {
             int toAccount = (int) (bank.size() * Math.random());
             int amount = (int) (maxAmount * Math.random());
 
             bank.waitForFundsAvailable(fromAccount, amount);
+            if(!bank.getIsOpen()) {
+                numActiveTransactsLock.lock();
+                readyToTest.signal();
+                numActiveTransactsLock.unlock();
+                break;
+            }
 
             try {
                 numActiveTransactsLock.lock();
-                while (bank.shouldTest()) {
+                while (bank.getIsOpen() && bank.shouldTest()) {
                     readyToTest.signal();
                     testingDone.await();
+                }
+                if (!bank.getIsOpen()) {
+                    readyToTest.signal();
+                    break;
                 }
 
                 bank.incrementNumActiveTransacts();
@@ -63,7 +73,7 @@ class TransferThread extends Thread {
             try {
                 numActiveTransactsLock.lock();
                 bank.decrementNumActiveTransacts();
-                while (bank.shouldTest()) {
+                while (bank.getIsOpen() && bank.shouldTest()) {
                     readyToTest.signal();
                     testingDone.await();
                 }
@@ -74,5 +84,8 @@ class TransferThread extends Thread {
             }
 
         }
+
+        bank.close();
+
     }
 }
