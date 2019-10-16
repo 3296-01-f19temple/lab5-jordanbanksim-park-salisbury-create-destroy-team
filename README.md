@@ -154,9 +154,9 @@ for an updated balance that may now satisfy the pending funds transfer.
  another transfer deposits at least the difference of the required amount into that account to continue.
  While this works fine during the runtime, when the transfer threads run near the end of their set runtime,
  a deadlock can occur if there are threads waiting for funds to continue a transfer, but all other 
- non-waiting threads have completed their run. Like the other tasks, we begin this by detailing the problem
- and potential solution above in the README before starting on the actual implementation.
-  - Finish this section
+ non-waiting threads have completed their run. This issue was avoided by having the bank store a flag
+ which indicated whether it was open and having the first transfer thread which finished all of its transfers
+ 'close' the bank by setting that flag and waking up all sleeping transfer threads.
 
 ## Team work
 
@@ -185,14 +185,17 @@ for an updated balance that may now satisfy the pending funds transfer.
  * Heavily assisted in bug-fixing of Task 3b
  * Implemented mutual exclusion for newly made test thread
  * Identified cause of deadlock near end of program execution
- * Implemented solution for deadlock that prevents successful termination
+ * Implemented solution for the deadlock that prevented successful termination
  
  ## Testing
  
  Since there were no requirements for testing on this project, we did not follow any of the previous test
  driven designs. When testing was done to verify the project was working, we would do system tests, simply
  running the Main file to verify everything runs and operates as intended. Of course, these tests would be 
- done manually. The biggest bug that this testing allowed us to identify was during the implementation of 
+ done manually. We would add logging statements to the code to assist debugging, especially when we were 
+ trying to infer how several threads were interacting behind the scenes.
+ 
+ The biggest bug that this testing allowed us to identify was during the implementation of 
  task 4. After the design change was implemented, there was an issue during a run where the program would
  always lock up before the second test() would be called. We identified this to be an odd deadlock situation
  caused by the interaction between our task 3 and 4 implementations.

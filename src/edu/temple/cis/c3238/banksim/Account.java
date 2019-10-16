@@ -60,18 +60,32 @@ public class Account {
     public void waitForAvailableFunds(int amount){
         try{
             balanceLock.lock();
-            while (amount > balance){ //not sure if this should be >= instead
+            while ( myBank.getIsOpen() && amount > balance) {
                 System.out.println("Account: " + this.toString() + " waiting on funds");
-                sufficientBalance.await();
+                //if not for the time limit, it would be theoretically possible to have a deadlock
+                // if all threads except one got to here (but hadn't called await() yet) then were preempted
+                // by the one thread, which ran the Bank.close() method to completion
+                final long maxWaitPeriod = 90* 1000000000L;//waits at most 1.5 minutes before waking up to check the wait conditions again
+                sufficientBalance.awaitNanos(maxWaitPeriod);
             }
         } catch(InterruptedException ex) {
             System.err.println("transfer thread resumed without available funds");
         } finally{
-            System.out.println("Account: " + this.toString() + " has funds");
+            if (myBank.getIsOpen())
+                System.out.println("Account: " + this.toString() + " has funds");
+            else
+                System.out.println("Account: " + this.toString() + " was waiting for funds when the bank closed");
+
             balanceLock.unlock();
         }
     }
-    
+
+    public void wake() {
+        balanceLock.lock();
+        sufficientBalance.signalAll();
+        balanceLock.unlock();
+    }
+
     @Override
     public String toString() {
         return String.format("Account[%d] balance %d", id, balance);

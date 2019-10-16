@@ -29,6 +29,8 @@ public class Bank {
     private final int initialBalance;
     private final int numAccounts;
 
+    private boolean isOpen;
+
     public Bank(int numAccounts, int initialBalance) {
         this.initialBalance = initialBalance;
         this.numAccounts = numAccounts;
@@ -38,6 +40,8 @@ public class Bank {
         }
         ntransacts = 0;
         numActiveTransacts = 0;
+
+        isOpen = true;
 
         shouldTest = false;
 
@@ -108,8 +112,6 @@ public class Bank {
         ntransactsLock.unlock();
     }
 
-
-
     public long getNumActiveTransacts() {
         return numActiveTransacts;
     }
@@ -123,6 +125,17 @@ public class Bank {
         numActiveTransactsLock.lock();
         this.numActiveTransacts--;
         numActiveTransactsLock.unlock();
+    }
+
+    public boolean getIsOpen() { return isOpen; }
+
+    public void close() {
+        isOpen = false;
+        shouldTest = true;
+        for (Account account : accounts) {
+            account.wake();
+        }
+        System.out.println("Bank is closing");
     }
 
 }
