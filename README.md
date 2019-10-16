@@ -167,7 +167,7 @@ for an updated balance that may now satisfy the pending funds transfer.
  member before the task is finally deemed "Done" on the Trello board.
  
  ### Contributions
- The Trello board also includes some information on this.
+ The [Trello board](https://trello.com/b/ZUHCJPin/cis3296-lab5) also includes some information on this.
  #### Christopher Park
  * Created and populated Trello board
  * Wrote overview of initial implementation of project
