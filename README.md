@@ -136,8 +136,11 @@ For the fourth task, we are asked to resolve a design issue in the Accounts clas
 implementation, any withdraw() requests to an account with insufficient funds is simply dropped. 
 While this allows the program to avoid problematic instances where accounts dip into negative balances,
 given that this is a simulation, it is a poor representation of how a bank should work. This task was 
-started by discussing the above problem in greater detail before implementing a solution. 
- - Finish this section
+started by discussing the above problem in greater detail before implementing a solution. To actually fix
+the design issue, we first create a new method waitForAvailableFunds(int). After creating a new sufficientBalance
+condition on the existing balanceLock, I have the method await() a thread if the account has insufficient funds.
+Every time a deposit is made, is use a signalAll() on the sufficientBalance condition to check all waiting threads
+for an updated balance that may now satisfy the pending funds transfer. 
  
  For the fifth task, we are asked to solve the final issue with the program, a deadlock issue that
  occurs at the end of the program runtime as a result of implementing task four. In the previous task
@@ -170,9 +173,22 @@ started by discussing the above problem in greater detail before implementing a 
  * Populated readme for writing requirement
  
  #### Scott Salisbury
- * Fill in here
+ * Created sequence diagram for initial implementation
+ * Implemented solution to first race condition
+ * Outlined cause of second race condition
+ * Heavily assisted in bug-fixing of Task 3b
+ * Implemented mutual exclusion for newly made test thread
+ * ADD TASK 5 WHEN DONE
  
  ## Testing
+ 
+ Since there were no requirements for testing on this project, we did not follow any of the previous test
+ driven designs. When testing was done to verify the project was working, we would do system tests, simply
+ running the Main file to verify everything runs and operates as intended. Of course, these tests would be 
+ done manually. The biggest bug that this testing allowed us to identify was during the implementation of 
+ task 4. After the design change was implemented, there was an issue during a run where the program would
+ always lock up before the second test() would be called. We identified this to be an odd deadlock situation
+ caused by the interaction between our task 3 and 4 implementations.
  
  ## UML diagrams
 
